@@ -66,7 +66,7 @@ main() {
   # mount partition
   echo "mount $root to /mnt..."
   mount "$root" /mnt
-  mkdir /mnt/boot
+  mkdir -p /mnt/boot
   echo "mount $esp to /mnt/boot..."
   mount "$esp" /mnt/boot
 
@@ -78,7 +78,7 @@ main() {
 
 
   # install packages
-  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "vim")
+  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "vim" "go-yq")
   local ucode=$(cpu_test)
 
   if [[ ! -z "$ucode" ]]; then
@@ -98,10 +98,6 @@ main() {
   # generate fstab
   echo "write fstab to /mnt/etc/fstab..."
   genfstab -U /mnt >> /mnt/etc/fstab
-
-
-  # link resolv.conf for systemd-resolved
-  ln -sf /run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 
 
   # enter chroot
@@ -161,8 +157,8 @@ EOS
 
 
   # copy files to /root
-  mkdir /root/arch_install
-  cp *.sh /root/arch_install
+  mkdir /mnt/root/arch_install
+  cp * /mnt/root/arch_install
 
   reboot
 }

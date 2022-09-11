@@ -15,6 +15,13 @@ main() {
   fi
 
 
+  # check depends
+  if ! pacman -Q go-yq &> /dev/null; then
+    echo "Error: go-yq is not installed"
+    exit 1
+  fi
+
+
   # parse arg
   local config="config.yaml"
 
@@ -58,6 +65,7 @@ main() {
   echo "set locale to en_US.UTF-8..."
   localectl set-locale en_US.UTF-8
 
+
   echo "set keymap to $keymap..."
   localectl set-keymap "$keymap"
 
@@ -71,25 +79,13 @@ main() {
   echo "DNS settings..."
   systemctl enable systemd-resolved
   systemctl start systemd-resolved
+  ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 
   # network settings
   echo "network settings..."
-  cat << EOS > /etc/systemd/network/20-wired.network
-[Match]
-Name=e*
-
-[Network]
-DHCP=yes
-EOS
-
-  cat << EOS > /etc/systemd/network/25-wireless.network
-[Match]
-Name=wl*
-
-[Network]
-DHCP=yes
-EOS
+  cp conf/20-wired.network /etc/systemd/network/
+  cp conf/25-wireless.network /etc/systemd/network/
 
   systemctl enable systemd-networkd
   systemctl start systemd-networkd
@@ -109,6 +105,10 @@ EOS
   echo "set timezone to $timezone..."
   timedatectl set-timezone "$timezone"
   timedatectl set-ntp true
+
+  
+  # copy pacman.conf
+  cp conf/pacman.conf /etc/
 
 
   # install AUR helper (yay)
