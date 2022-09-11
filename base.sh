@@ -160,6 +160,10 @@ EOS
   $exectg passwd "$uname"
 
 
+  # copy files to /root
+  mkdir /root/arch_install
+  cp *.sh /root/arch_install
+
   reboot
 }
 
