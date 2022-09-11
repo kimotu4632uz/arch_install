@@ -7,20 +7,13 @@ if [[ $(id -u) == "0" ]]; then
 fi
 
 
-# install AUR helper (yay)
-git clone https://aur.archlinux.org/yay-bin.git
-cd yay-bin
-makepkg -si
-cd $HOME
-
-
 # install github cli
 yes | sudo pacman -S github-cli
 gh auth login -p ssh --with-token < github_token.txt
 
 
 # install depends
-yes | sudo pacman -S xorg-server lightdm lightdm-webkit2-greeter i3-gaps polybar rofi xss-lock feh
+yes | sudo pacman -S xorg-server lightdm lightdm-webkit2-greeter i3-gaps polybar rofi xss-lock feh playerctl bluez bluez-utils pulseaudio
 yes | yay -S i3lock-color
 
 
