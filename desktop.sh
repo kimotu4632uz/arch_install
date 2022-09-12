@@ -13,7 +13,14 @@ gh auth login --with-token < github_token.txt
 
 
 # install depends
-sudo pacman -S --noconfirm xorg-server lightdm lightdm-webkit2-greeter i3-gaps polybar rofi xss-lock feh playerctl bluez bluez-utils pipewire{,-pulse,-alsa} wireplumber
+sudo pacman -S --noconfirm \
+  xorg-server xorg-xmodmap \
+  lightdm lightdm-webkit2-greeter \
+  i3-gaps polybar rofi xss-lock feh \
+  maim xclip \
+  playerctl bluez bluez-utils pipewire{,-pulse,-alsa} wireplumber \
+  gnome-keyring fcitx5-im fcitx5-mozc
+
 yay -S --noconfirm i3lock-color
 
 
@@ -30,7 +37,8 @@ cd $HOME
 git clone https://github.com/kimotu4632uz/dotfiles.git
 cd dotfiles
 ./setup.sh base fish neovim i3 alacritty audio
-./x11/install.sh i3
+cd x11
+./install.sh i3
 cd $HOME
 
 
@@ -65,7 +73,7 @@ sudo systemctl enable pcscd
 
 
 # install GUI apps
-sudo pacman -S --noconfirm vivaldi alacritty thunar evince poppler-data xdg-user-dirs-gtk flatpak
+sudo pacman -S --noconfirm vivaldi browserpass-chromium alacritty thunar evince poppler-data xdg-user-dirs-gtk flatpak
 flatpak install --noninteractive cider joplin
 
 
