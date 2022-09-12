@@ -29,6 +29,15 @@ cd dotfiles
 cd $HOME
 
 
+# install rofi theme
+git clone --depth=1 https://github.com/adi1090x/rofi.git
+cd rofi
+chmod +x setup.sh
+./setup.sh
+cd $HOME
+rm -rf rofi
+
+
 # install fonts
 sudo pacman -S --noconfirm noto-fonts{,-cjk,-emoji,-extra} ttf-font-awesome
 gh release download -R "kimotu4632uz/RictyNF" -p "*.ttf"
