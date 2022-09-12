@@ -29,7 +29,8 @@ sudo systemctl enable lightdm
 cd $HOME
 git clone https://github.com/kimotu4632uz/dotfiles.git
 cd dotfiles
-./setup.sh base fish i3 neovim alacritty
+./setup.sh base fish neovim i3 alacritty audio
+./x11/install.sh i3
 cd $HOME
 
 
