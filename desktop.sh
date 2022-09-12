@@ -21,6 +21,10 @@ yay -S --noconfirm i3lock-color
 sudo sed -i -e 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
 
 
+# enable lightdm
+sudo systemctl enable lightdm
+
+
 # clone dotfiles
 cd $HOME
 git clone https://github.com/kimotu4632uz/dotfiles.git
@@ -60,7 +64,8 @@ sudo systemctl enable pcscd
 
 
 # install GUI apps
-sudo pacman -S --noconfirm vivaldi alacritty thunar xdg-user-dirs-gtk evince poppler-data
+sudo pacman -S --noconfirm vivaldi alacritty thunar evince poppler-data xdg-user-dirs-gtk flatpak
+flatpak install --noninteractive cider joplin
 
 
 reboot
