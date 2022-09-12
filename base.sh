@@ -54,6 +54,8 @@ main() {
   local esp=$(yq '.partition.efi' < "$config")
   local root=$(yq '.partition.root' < "$config")
 
+  local nettype=$(yq '.network.type' < "$config")
+
   local uname=$(yq '.username' < "$config")
 
 
