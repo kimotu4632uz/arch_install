@@ -158,6 +158,7 @@ EOS
 
   # copy files to /root
   cp -r ../arch_install /mnt/home/"$uname"/
+  $exectg chown -R "$uname":"$uname" /home/"$uname"/arch_install
 
   reboot
 }
