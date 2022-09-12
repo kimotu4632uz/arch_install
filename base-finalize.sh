@@ -112,13 +112,13 @@ main() {
 
 
   # install AUR helper (yay)
-  su "$uname"
-  cd $HOME
-  git clone https://aur.archlinux.org/yay-bin.git
+  cd /home/"$uname"
+  su "$uname" -c 'git clone https://aur.archlinux.org/yay-bin.git'
   cd yay-bin
-  makepkg -si
+  su "$uname" -c makepkg
+  yes | pacman -U yay-bin-*.zst
   cd $HOME
-  rm -rf yay-bin
+  rm -rf /home/"$uname"/yay-bin
 
 
   reboot

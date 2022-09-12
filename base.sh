@@ -157,8 +157,7 @@ EOS
 
 
   # copy files to /root
-  mkdir /mnt/root/arch_install
-  cp * /mnt/root/arch_install
+  cp -r ../arch_install /mnt/root/
 
   reboot
 }
