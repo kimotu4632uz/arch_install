@@ -2,6 +2,7 @@
 
 print_help() {
   echo "Usage: ${0##*/} [OPTIONS]"
+  echo "please run this script by sudo."
   echo ""
   echo "OPTIONS:"
   echo "  -c <CONFIG> use CONFIG as config file"
@@ -10,7 +11,7 @@ print_help() {
 main() {
   # check runned by root
   if [[ $(id -u) != "0" ]]; then
-    echo "Error: please run script by root."
+    echo "Error: please run script by sudo."
     exit 1
   fi
 

@@ -157,7 +157,7 @@ EOS
 
 
   # copy files to /root
-  cp -r ../arch_install /mnt/root/
+  cp -r ../arch_install /mnt/home/"$uname"/
 
   reboot
 }
