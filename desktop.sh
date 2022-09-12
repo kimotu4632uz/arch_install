@@ -8,13 +8,13 @@ fi
 
 
 # install github cli
-yes | sudo pacman -S github-cli
-gh auth login -p ssh --with-token < github_token.txt
+sudo pacman -S --noconfirm github-cli
+gh auth login --with-token < github_token.txt
 
 
 # install depends
-yes | sudo pacman -S xorg-server lightdm lightdm-webkit2-greeter i3-gaps polybar rofi xss-lock feh playerctl bluez bluez-utils pulseaudio
-yes | yay -S i3lock-color
+sudo pacman -S --noconfirm xorg-server lightdm lightdm-webkit2-greeter i3-gaps polybar rofi xss-lock feh playerctl bluez bluez-utils pipewire{,-pulse,-alsa} wireplumber
+yay -S --noconfirm i3lock-color
 
 
 # lighdm greeter settings
@@ -22,6 +22,7 @@ sudo sed -i -e 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/'
 
 
 # clone dotfiles
+cd $HOME
 git clone https://github.com/kimotu4632uz/dotfiles.git
 cd dotfiles
 ./setup.sh base fish i3 neovim alacritty
@@ -29,16 +30,28 @@ cd $HOME
 
 
 # install fonts
-yes | sudo pacman -S noto-fonts{,-cjk,-emoji,-extra} ttf-font-awesome
+sudo pacman -S --noconfirm noto-fonts{,-cjk,-emoji,-extra} ttf-font-awesome
 gh release download -R "kimotu4632uz/RictyNF" -p "*.ttf"
 mkdir .fonts
 mv RictyNF-Regular.ttf .fonts/
 fc-cache -fv
 
 
-# install other depends
-yes | sudo pacman -S fish starship
-yes | yay -S tela-circle-icon-theme-git
+# install icons
+yay -S --noconfirm tela-circle-icon-theme-git
+
+
+# install command line tools
+sudo pacman -S --noconfirm fish starship fd bat fzf neovim
+
+
+# setup smart card
+sudo pacman -S --noconfirm pcsc-tools libusb-compat
+sudo systemctl enable pcscd
+
+
+# install GUI apps
+sudo pacman -S --noconfirm vivaldi alacritty thunar xdg-user-dirs-gtk evince poppler-data
 
 
 reboot
