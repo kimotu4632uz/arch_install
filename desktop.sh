@@ -65,6 +65,7 @@ yay -S --noconfirm tela-circle-icon-theme-git
 
 # install command line tools
 sudo pacman -S --noconfirm fish starship fd bat fzf neovim pass glances
+yay -S --noconfirm ghq-bin
 
 
 # setup smart card
