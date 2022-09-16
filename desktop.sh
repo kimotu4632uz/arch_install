@@ -15,17 +15,15 @@ gh auth login --with-token < github_token.txt
 # install depends
 sudo pacman -S --noconfirm \
   xorg-server xorg-xmodmap \
-  lightdm lightdm-webkit2-greeter \
-  i3-gaps polybar rofi xss-lock feh \
-  maim xclip \
-  playerctl bluez bluez-utils pipewire{,-pulse,-alsa} wireplumber \
+  lightdm lightdm-webkit2-greeter lightdm-webkit-theme-litarvan \
+  bluez bluez-utils \
   gnome-keyring fcitx5-im fcitx5-mozc
 
-yay -S --noconfirm i3lock-color
 
 
 # lighdm greeter settings
 sudo sed -i -e 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+sudo sed -i -E 's/^(webkit_theme.*)=.*/\1= litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
 
 
 # enable lightdm
@@ -35,11 +33,24 @@ sudo systemctl enable lightdm
 # clone dotfiles
 cd $HOME
 git clone https://github.com/kimotu4632uz/dotfiles.git
-cd dotfiles
-./setup.sh base fish neovim i3 alacritty audio
-cd x11
-./install.sh i3
-cd $HOME
+./dotfiles/setup.sh -p base fish neovim i3 alacritty audio gtk rclone
+./dotfiles/x11/install.sh i3
+
+
+# set IME
+sudo cat << EOS >> /etc/environment
+GTK_IM_MODULE=fcitx5
+QT_IM_MODULE=fcitx5
+XMODIFIERS=@im=fcitx5
+EOS
+
+# enable services
+systemctl --user enable mpd
+systemctl --user enable mpDris2
+
+
+# load keymap
+xmodmap ~/.Xmodmap
 
 
 # install rofi theme
@@ -59,13 +70,8 @@ mv RictyNF-Regular.ttf .fonts/
 fc-cache -fv
 
 
-# install icons
-yay -S --noconfirm tela-circle-icon-theme-git
-
-
 # install command line tools
-sudo pacman -S --noconfirm fish starship fd bat fzf neovim pass glances
-yay -S --noconfirm ghq-bin
+sudo pacman -S --noconfirm pass glances tty-clock neofetch
 
 
 # setup smart card
@@ -74,8 +80,16 @@ sudo systemctl enable pcscd
 
 
 # install GUI apps
-sudo pacman -S --noconfirm vivaldi browserpass-chromium alacritty thunar evince poppler-data xdg-user-dirs-gtk flatpak
+sudo pacman -S --noconfirm vivaldi browserpass-chromium thunar evince poppler-data eog xdg-user-dirs-gtk flatpak
 flatpak install --noninteractive cider joplin
+
+
+# Thunar settings
+xfconf-query -c thunar -p /last-locaion-bar -n -t string -s ThunarLocationButtons
+
+
+# finally set locale
+localectl set-locale ja_JP.UTF-8
 
 
 reboot
