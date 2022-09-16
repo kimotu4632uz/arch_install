@@ -2,7 +2,7 @@
 
 print_help() {
   echo "Usage: ${0##*/} [OPTIONS]"
-  echo "please run this script by sudo."
+  echo "please run this script by user."
   echo ""
   echo "OPTIONS:"
   echo "  -c <CONFIG> use CONFIG as config file"
@@ -10,8 +10,8 @@ print_help() {
 
 main() {
   # check runned by root
-  if [[ $(id -u) != "0" ]]; then
-    echo "Error: please run script by sudo."
+  if [[ $(id -u) == "0" ]]; then
+    echo "Error: please do notrun script by sudo."
     exit 1
   fi
 
@@ -54,72 +54,71 @@ main() {
 
   # generate locale
   echo "generate locale..."
-  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+  sudo echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
   if [[ ! -z "$locale" ]] && [[ "$locale" != "null" ]]; then
-    echo "$locale UTF-8" >> /etc/locale.gen
+    sudo echo "$locale UTF-8" >> /etc/locale.gen
   fi
 
-  locale-gen
+  sudo locale-gen
 
 
   # set locale
   echo "set locale to en_US.UTF-8..."
-  localectl set-locale en_US.UTF-8
+  sudo localectl set-locale en_US.UTF-8
 
 
   echo "set keymap to $keymap..."
-  localectl set-keymap "$keymap"
+  sudo localectl set-keymap "$keymap"
 
 
   # set hostname
   echo "set hostname to $hostname..."
-  hostnamectl set-hostname "$hostname"
+  sudo hostnamectl set-hostname "$hostname"
 
 
   # DNS settings
   echo "DNS settings..."
-  systemctl enable systemd-resolved
-  systemctl start systemd-resolved
-  ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+  sudo systemctl enable systemd-resolved
+  sudo systemctl start systemd-resolved
+  sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 
   # network settings
   echo "network settings..."
-  cp conf/20-wired.network /etc/systemd/network/
-  cp conf/25-wireless.network /etc/systemd/network/
+  sudo cp conf/20-wired.network /etc/systemd/network/
+  sudo cp conf/25-wireless.network /etc/systemd/network/
 
-  systemctl enable systemd-networkd
-  systemctl start systemd-networkd
+  sudo systemctl enable systemd-networkd
+  sudo systemctl start systemd-networkd
 
   if [[ "$nettype" == "wireless" ]]; then
-    systemctl enable iwd
-    systemctl start iwd
+    sudo systemctl enable iwd
+    sudo systemctl start iwd
 
     echo ""
     echo "please finish connecting wifi."
     echo ""
-    iwctl
+    sudo iwctl
   fi
 
 
   # set timezone
   echo "set timezone to $timezone..."
-  timedatectl set-timezone "$timezone"
-  timedatectl set-ntp true
+  sudo timedatectl set-timezone "$timezone"
+  sudo timedatectl set-ntp true
 
   
   # copy pacman.conf
-  cp conf/pacman.conf /etc/
+  sudo cp conf/pacman.conf /etc/
 
 
   # install AUR helper (yay)
-  cd /home/"$uname"
-  su "$uname" -c 'git clone https://aur.archlinux.org/yay-bin.git'
-  cd yay-bin
-  su "$uname" -c makepkg
-  yes | pacman -U yay-bin-*.zst
   cd $HOME
-  rm -rf /home/"$uname"/yay-bin
+  git clone https://aur.archlinux.org/yay-bin.git
+  cd yay-bin
+  makepkg -si
+  cd $HOME
+  rm -rf yay-bin
 
 
   reboot
