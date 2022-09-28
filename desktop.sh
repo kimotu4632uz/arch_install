@@ -15,14 +15,16 @@ gh auth login --with-token < github_token.txt
 # install depends
 sudo pacman -S --noconfirm \
   xorg-server xorg-xmodmap \
-  lightdm lightdm-webkit2-greeter lightdm-webkit-theme-litarvan \
+  lightdm lightdm-webkit2-greeter lightdm-webkit-theme-litarvan numlockx \
   bluez bluez-utils \
   gnome-keyring fcitx5-im fcitx5-mozc
 
 
 
 # lighdm greeter settings
-sudo sed -i -e 's/^#greeter-session=.*/greeter-session=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+sudo sed -i -E 's/^#(greeter-session)=.*/\1=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+sudo sed -i -E 's/^#(greeter-setup-script)=.*/\1=\/usr\/bin\/numlockx on/' /etc/lightdm/lightdm.conf
+
 sudo sed -i -E 's/^(webkit_theme.*)=.*/\1= litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
 
 
@@ -65,8 +67,8 @@ rm -rf rofi
 # install fonts
 sudo pacman -S --noconfirm noto-fonts{,-cjk,-emoji,-extra} ttf-font-awesome
 gh release download -R "kimotu4632uz/RictyNF" -p "*.ttf"
-mkdir .fonts
-mv RictyNF-Regular.ttf .fonts/
+mkdir ~/.local/share/fonts
+mv RictyNF-Regular.ttf ~/.local/share/fonts/
 fc-cache -fv
 
 
