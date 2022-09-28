@@ -51,8 +51,8 @@ main() {
   done
 
 
-  local esp=$(yq '.partition.efi' < "$config")
-  local root=$(yq '.partition.root.full' < "$config")
+  local esp=$(yq '.partition.efi.full' < "$config")
+  local root=$(yq '.partition.root' < "$config")
 
   local nettype=$(yq '.network.type' < "$config")
 

@@ -3,8 +3,8 @@
 
 MOK_PREFIX=/root/.mok
 
-root_dev=$(yq '.partition.root.dev' < "$config")
-root_part=$(yq '.partition.root.part' < "$config")
+esp_dev=$(yq '.partition.efi.dev' < "$config")
+esp_part=$(yq '.partition.efi.part' < "$config")
 
 # check runned by root
 if [[ $(id -u) == "0" ]]; then
@@ -46,7 +46,7 @@ sbsign --key "$MOK_PREFIX/MOK.key" --cert "$MOK_PREFIX/MOK.crt" --output /boot/E
 
 
 # add boot entry
-sudo efibootmgr --disk $root_dev --part $root_part --create --label "Shim Boot Manager" --loader /EFI/systemd/shimx64.efi
+sudo efibootmgr --disk $esp_dev --part $esp_part --create --label "Shim Boot Manager" --loader /EFI/systemd/shimx64.efi
 
 
 # enroll MOK public key
