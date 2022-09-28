@@ -1,6 +1,9 @@
 partition:
   efi: /dev/sda1
-  root: /dev/sda2
+  root:
+    full: /dev/nvme0n1p2
+    dev: /dev/nvme0n1
+    part: 2
 
 system:
   locale: ja_JP.UTF-8
