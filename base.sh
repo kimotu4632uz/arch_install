@@ -122,7 +122,7 @@ main() {
 
   # write boot entry
   echo "write boot config..."
-  local partuuid=$(blkid -s PARTUUID -o value "$lukspath")
+  local uuid=$(blkid -s UUID -o value "$lukspath")
   local entry="/mnt/boot/loader/entries/arch.conf"
 
   mkdir -p "${entry%/*}"
@@ -138,7 +138,7 @@ EOS
 
   cat << EOS >> "$entry"
 initrd  /initramfs-linux.img
-options cryptdevice=UUID=$partuuid:$luksname root=$root resume=$swap rw
+options cryptdevice=UUID=$uuid:$luksname root=$root resume=$swap rw
 EOS
 
 
