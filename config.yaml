@@ -3,7 +3,12 @@ partition:
     full: /dev/nvme0n1p1
     dev: /dev/nvme0n1
     part: 1
-  root: /dev/sda2
+  luks_container:
+    path: /dev/sda2
+    name: cryptlvm
+    lvname:
+      root: /dev/mapper/MyVol-root
+      swap: /dev/mapper/MyVol-swap
 
 system:
   locale: ja_JP.UTF-8

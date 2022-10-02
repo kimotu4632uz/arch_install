@@ -52,7 +52,12 @@ main() {
 
 
   local esp=$(yq '.partition.efi.full' < "$config")
-  local root=$(yq '.partition.root' < "$config")
+
+  local lukspath=$(yq '.partition.luks_container.path' < "$config")
+  local luksname=$(yq '.partition.luks_container.name' < "$config")
+
+  local root=$(yq '.partition.luks_container.lvname.root' < "$config")
+  local swap=$(yq '.partition.luks_container.lvname.swap' < "$config")
 
   local nettype=$(yq '.network.type' < "$config")
 
@@ -106,14 +111,18 @@ main() {
   local exectg="arch-chroot /mnt"
 
 
+  # fix mkinitcpio.conf
+  sed -i -E 's/^(HOOKS=)\(.*\)$/\1(base udev autodetect keyboard keymap consolefont modconf block encrypt lvm2 resume filesystems fsck)/' /mnt/etc/mkinitcpio.conf
+  $exectg mkinitcpio -p linux
+
+
   # install bootloader
   echo "install bootloader to /boot..."
   $exectg bootctl --path=/boot install
 
-
   # write boot entry
   echo "write boot config..."
-  local partuuid=$(blkid -s PARTUUID -o value "$root")
+  local partuuid=$(blkid -s PARTUUID -o value "$lukspath")
   local entry="/mnt/boot/loader/entries/arch.conf"
 
   mkdir -p "${entry%/*}"
@@ -129,7 +138,7 @@ EOS
 
   cat << EOS >> "$entry"
 initrd  /initramfs-linux.img
-options root=PARTUUID=$partuuid rw
+options cryptdevice=UUID=$partuuid:$luksname root=$root resume=$swap rw
 EOS
 
 
