@@ -15,17 +15,17 @@ gh auth login --with-token < github_token.txt
 # install depends
 sudo pacman -S --noconfirm \
   xorg-server xorg-xmodmap \
-  lightdm lightdm-webkit2-greeter lightdm-webkit-theme-litarvan numlockx \
+  lightdm lightdm-slick-greeter numlockx \
   bluez bluez-utils \
   gnome-keyring fcitx5-im fcitx5-mozc
 
 
 
 # lighdm greeter settings
-sudo sed -i -E 's/^#(greeter-session)=.*/\1=lightdm-webkit2-greeter/' /etc/lightdm/lightdm.conf
+sudo sed -i -E 's/^#(greeter-session)=.*/\1=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
 sudo sed -i -E 's/^#(greeter-setup-script)=.*/\1=\/usr\/bin\/numlockx on/' /etc/lightdm/lightdm.conf
 
-sudo sed -i -E 's/^(webkit_theme.*)=.*/\1= litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
+# sudo sed -i -E 's/^(webkit_theme.*)=.*/\1= litarvan/' /etc/lightdm/lightdm-webkit2-greeter.conf
 
 
 # enable lightdm
