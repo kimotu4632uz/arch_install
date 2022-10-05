@@ -54,9 +54,9 @@ main() {
 
   # generate locale
   echo "generate locale..."
-  sudo echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+  sudo sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
   if [[ ! -z "$locale" ]] && [[ "$locale" != "null" ]]; then
-    sudo echo "$locale UTF-8" >> /etc/locale.gen
+    sudo sh -c "echo $locale UTF-8 >> /etc/locale.gen"
   fi
 
   sudo locale-gen
