@@ -94,5 +94,5 @@ xfconf-query -c thunar -p /last-locaion-bar -n -t string -s ThunarLocationButton
 localectl set-locale ja_JP.UTF-8
 
 
-reboot
+sudo reboot
 

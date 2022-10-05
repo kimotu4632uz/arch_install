@@ -121,7 +121,7 @@ main() {
   rm -rf yay-bin
 
 
-  reboot
+  sudo reboot
 }
 
 main "$@"
