@@ -116,7 +116,7 @@ main() {
   cd $HOME
   git clone https://aur.archlinux.org/yay-bin.git
   cd yay-bin
-  makepkg -si
+  makepkg -si --noconfirm
   cd $HOME
   rm -rf yay-bin
 
