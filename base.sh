@@ -117,7 +117,7 @@ main() {
 
 
   # fix mkinitcpio.conf
-  sed -i -E 's/^(HOOKS=)\(.*\)$/\1(base systemd autodetect keyboard sd-vconsole modconf block sd-entrypt lvm2 filesystems fsck)/' /mnt/etc/mkinitcpio.conf
+  sed -i -E 's/^(HOOKS=)\(.*\)$/\1(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt lvm2 filesystems fsck)/' /mnt/etc/mkinitcpio.conf
   $exectg mkinitcpio -p linux
 
 
