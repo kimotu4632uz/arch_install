@@ -60,6 +60,8 @@ main() {
   local swap=$(yq '.partition.luks_container.lvname.swap' < "$config")
 
   local nettype=$(yq '.network.type' < "$config")
+  
+  local keymap=$(yq '.system.keymap' < "$config")
 
   local uname=$(yq '.username' < "$config")
 
@@ -111,6 +113,8 @@ main() {
   echo "write fstab to /mnt/etc/fstab..."
   genfstab -U /mnt >> /mnt/etc/fstab
 
+  echo "set keymap..."
+  echo "KEYMAP=$keymap" > /etc/vconsole.conf
 
   # enter chroot
   local exectg="arch-chroot /mnt"
