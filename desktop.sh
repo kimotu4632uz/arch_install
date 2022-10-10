@@ -40,19 +40,16 @@ git clone https://github.com/kimotu4632uz/dotfiles.git
 
 
 # set IME
-sudo cat << EOS >> /etc/environment
+sudo tee -a /etc/environment << EOS > /dev/null
 GTK_IM_MODULE=fcitx5
 QT_IM_MODULE=fcitx5
 XMODIFIERS=@im=fcitx5
 EOS
 
+
 # enable services
 systemctl --user enable mpd
 systemctl --user enable mpDris2
-
-
-# load keymap
-xmodmap ~/.Xmodmap
 
 
 # install rofi theme
@@ -67,13 +64,14 @@ rm -rf rofi
 # install fonts
 sudo pacman -S --noconfirm noto-fonts{,-cjk,-emoji,-extra} ttf-font-awesome
 gh release download -R "kimotu4632uz/RictyNF" -p "*.ttf"
-mkdir ~/.local/share/fonts
+mkdir -p ~/.local/share/fonts
 mv RictyNF-Regular.ttf ~/.local/share/fonts/
 fc-cache -fv
 
 
 # install command line tools
-sudo pacman -S --noconfirm pass glances tty-clock neofetch
+sudo pacman -S --noconfirm pass glances neofetch
+yay -S --noconfirm tty-clock-git
 
 
 # setup smart card
