@@ -92,7 +92,7 @@ main() {
 
 
   # install packages
-  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "lvm2" "efibootmgr" "vim" "go-yq")
+  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "lvm2" "libfido2" "efibootmgr" "vim" "go-yq")
   local ucode=$(cpu_test)
 
   if [[ ! -z "$ucode" ]]; then
@@ -114,7 +114,7 @@ main() {
   genfstab -U /mnt >> /mnt/etc/fstab
 
   echo "set keymap..."
-  echo "KEYMAP=$keymap" > /etc/vconsole.conf
+  echo "KEYMAP=$keymap" > /mnt/etc/vconsole.conf
 
   # enter chroot
   local exectg="arch-chroot /mnt"
