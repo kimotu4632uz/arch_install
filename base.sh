@@ -78,6 +78,11 @@ main() {
   mount "$esp" /mnt/boot
 
 
+  # enable swap
+  echo "enable swap..."
+  swapon "$swap"
+
+
   # update mirror
   echo "update mirror..."
   echo ""
@@ -112,7 +117,7 @@ main() {
 
 
   # fix mkinitcpio.conf
-  sed -i -E 's/^(HOOKS=)\(.*\)$/\1(base udev autodetect keyboard keymap consolefont modconf block encrypt lvm2 resume filesystems fsck)/' /mnt/etc/mkinitcpio.conf
+  sed -i -E 's/^(HOOKS=)\(.*\)$/\1(base systemd autodetect keyboard sd-vconsole modconf block sd-entrypt lvm2 filesystems fsck)/' /mnt/etc/mkinitcpio.conf
   $exectg mkinitcpio -p linux
 
 
@@ -138,7 +143,10 @@ EOS
 
   cat << EOS >> "$entry"
 initrd  /initramfs-linux.img
-options cryptdevice=UUID=$uuid:$luksname root=$root resume=$swap rw
+options luks.name=$uuid=$luksname
+options luks.options=fido2-device=auto
+options root=$root rw
+options resume=$swap
 EOS
 
 
