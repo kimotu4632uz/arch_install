@@ -82,12 +82,17 @@ sudo systemctl enable pcscd
 
 
 # install GUI apps
-sudo pacman -S --noconfirm vivaldi browserpass-chromium thunar evince poppler-data eog xdg-user-dirs-gtk flatpak
+sudo pacman -S --noconfirm vivaldi browserpass-chromium thunar gvfs thunar-archive-plugin file-roller thunar-media-tags-plugin thunar-volman evince poppler-data eog xdg-user-dirs-gtk flatpak
 flatpak install --noninteractive cider joplin
 
 
 # Thunar settings
 xfconf-query -c thunar -p /last-locaion-bar -n -t string -s ThunarLocationButtons
+
+
+# power manager
+sudo pacman -S --noconfirm xfce4-power-manager
+xfconf-query --create -c xfce4-session -p /general/LockCommand -t string -s "~/.config/i3/script/lock.sh"
 
 
 # finally set locale
