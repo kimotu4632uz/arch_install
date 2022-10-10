@@ -90,7 +90,7 @@ main() {
 
 
   # install packages
-  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "lvm2" "vim" "go-yq")
+  local pkgs=("base" "base-devel" "git" "linux" "linux-firmware" "lvm2" "efibootmgr" "vim" "go-yq")
   local ucode=$(cpu_test)
 
   if [[ ! -z "$ucode" ]]; then
