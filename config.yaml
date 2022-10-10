@@ -7,8 +7,8 @@ partition:
     path: /dev/sda2
     name: cryptlvm
     lvname:
-      root: /dev/mapper/MyVol-root
-      swap: /dev/mapper/MyVol-swap
+      root: /dev/MyVol/root
+      swap: /dev/MyVol/swap
 
 system:
   locale: ja_JP.UTF-8
