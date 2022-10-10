@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
-
 MOK_PREFIX=/root/.mok
+
+config="config.yaml"
 
 esp_dev=$(yq '.partition.efi.dev' < "$config")
 esp_part=$(yq '.partition.efi.part' < "$config")
@@ -14,13 +15,13 @@ fi
 
 
 # install depends
-sudo pacman -S sbsigntools mokutil
-yay -S shim-signed
+sudo pacman -S --noconfirm sbsigntools mokutil
+yay -S --noconfirm shim-signed
 
 cd $HOME
 git clone https://github.com/kimotu4632uz/secure-boot-kit.git
 cd secure-boot-kit
-makepkg -si
+makepkg -si --noconfirm
 cd $HOME
 rm -rf secure-boot-kit
 
@@ -41,8 +42,8 @@ sudo openssl x509 -outform DER -in "$MOK_PREFIX/MOK.crt" -out "$MOK_PREFIX/MOK.c
 
 
 # sign kernel and boot loader
-sbsign --key "$MOK_PREFIX/MOK.key" --cert "$MOK_PREFIX/MOK.crt" --output /boot/vmlinuz-linux /boot/vmlinuz-linux
-sbsign --key "$MOK_PREFIX/MOK.key" --cert "$MOK_PREFIX/MOK.crt" --output /boot/EFI/systemd/grubx64.efi /boot/EFI/systemd/grubx64.efi
+sudo sbsign --key "$MOK_PREFIX/MOK.key" --cert "$MOK_PREFIX/MOK.crt" --output /boot/vmlinuz-linux /boot/vmlinuz-linux
+sudo sbsign --key "$MOK_PREFIX/MOK.key" --cert "$MOK_PREFIX/MOK.crt" --output /boot/EFI/systemd/grubx64.efi /boot/EFI/systemd/grubx64.efi
 
 
 # add boot entry
