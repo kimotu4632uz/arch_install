@@ -34,7 +34,7 @@ sudo systemctl enable lightdm
 
 # clone dotfiles
 cd $HOME
-git clone https://github.com/kimotu4632uz/dotfiles.git
+git clone --recursive https://github.com/kimotu4632uz/dotfiles.git
 ./dotfiles/setup.sh -p base fish neovim i3 alacritty audio gtk rclone
 ./dotfiles/x11/install.sh i3
 
@@ -70,7 +70,7 @@ fc-cache -fv
 
 
 # install command line tools
-sudo pacman -S --noconfirm pass glances neofetch
+sudo pacman -S --noconfirm pass glances neofetch man-db
 yay -S --noconfirm tty-clock-git
 
 
@@ -85,13 +85,17 @@ flatpak install --noninteractive cider joplin
 
 
 # Thunar settings
-xfconf-query -c thunar -p /last-locaion-bar -n -t string -s ThunarLocationButtons
+xfconf-query -c thunar -p /last-location-bar -n -t string -s ThunarLocationButtons
 
 
 # power manager
 sudo pacman -S --noconfirm xfce4-power-manager
 xfconf-query --create -c xfce4-session -p /general/LockCommand -t string -s "~/.config/i3/script/lock.sh"
 
+
+# firewall
+sudo pacman -S nftables
+sudo systemctl enable nftables
 
 # finally set locale
 localectl set-locale ja_JP.UTF-8
