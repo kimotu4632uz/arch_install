@@ -23,7 +23,7 @@ main() {
   gh auth login --with-token < github_token.txt
 
 
-  # install depends
+  # install basic desktop
   install_pkg
     xorg-server \
     lightdm \
@@ -78,7 +78,7 @@ main() {
   fc-cache -fv
 
 
-  # set IME
+  # IME settings
   sudo tee -a /etc/environment << EOS > /dev/null
 GTK_IM_MODULE=fcitx5
 QT_IM_MODULE=fcitx5
@@ -94,7 +94,7 @@ EOS
   sudo systemctl enable pcscd
 
 
-  # firewall
+  # setup firewall
   install_pkg nftables
   sudo systemctl enable nftables
 
