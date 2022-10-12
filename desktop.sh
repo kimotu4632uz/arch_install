@@ -24,16 +24,14 @@ main() {
 
 
   # install basic desktop
-  install_pkg
+  install_pkg \
     xorg-server \
     lightdm \
     lightdm-slick-greeter \
     numlockx \
     bluez \
     bluez-utils \
-    gnome-keyring \
-    fcitx5-im \
-    fcitx5-mozc
+    gnome-keyring
  
 
   # lighdm greeter settings
@@ -45,6 +43,22 @@ main() {
 
   # enable lightdm
   sudo systemctl enable lightdm
+
+
+  # set keyboard layout and then install fcitx5
+  sudo pacman -S --asdeps --noconfirm libxkbcommon
+  sudo localectl set-x11-keymap jp jp106
+
+  install_pkg \
+    fcitx5-im \
+    fcitx5-mozc
+
+  # IME settings
+  sudo tee -a /etc/environment << EOS > /dev/null
+GTK_IM_MODULE=fcitx5
+QT_IM_MODULE=fcitx5
+XMODIFIERS=@im=fcitx5
+EOS
 
 
   # clone dotfiles
@@ -76,14 +90,6 @@ main() {
   mv RictyNF-Regular.ttf ~/.local/share/fonts/
 
   fc-cache -fv
-
-
-  # IME settings
-  sudo tee -a /etc/environment << EOS > /dev/null
-GTK_IM_MODULE=fcitx5
-QT_IM_MODULE=fcitx5
-XMODIFIERS=@im=fcitx5
-EOS
 
 
   # setup smart card
